@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Compiled and minified CSS -->
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Task</title>
+  </head>
+  <body>
+    <form>
+      <div class="form-group">
+        <label for="formGroupExampleInput">Enter Item</label>
+        <input type="text" class="form-control" id="task" autofocus />
+        <button class="btn btn-outline-success" type="submit">
+          Add task
+        </button>
+      </div>
+    </form>
+
+    <script>
+      const electron = require('electron');
+      //   ipcRenderer is used to send an event with a payload from this file to main.js
+      // Thes we want to send it to be listed in the mainWindow
+      const { ipcRenderer } = electron;
+
+      const form = document.querySelector('form');
+      form.addEventListener('submit', submitForm);
+
+      function submitForm(e) {
+        // By default,submit will try to submit the form to a file
+        e.preventDefault();
+        const task = document.querySelector('#task').value;
+        console.log('Task set to main.js');
+
+        // Works similar to socket.io : Sends a name and a payload.
+        // Then we catch it on main.js side
+        ipcRenderer.send('task:add', task);
+      }
+    </script>
+  </body>
+</html>
